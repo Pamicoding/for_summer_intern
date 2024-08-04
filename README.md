@@ -8,7 +8,11 @@
 4. h3dd.inp    
 h3dd的參數檔，把前三項依序填上即可    
 5. ./h3dd <h3dd.inp     
-h3dd的主程式，直接在終端機執行即可，執行完會產生
+h3dd的主程式，直接在終端機執行即可，執行完就會產生下面兩個檔案         
+如果不能用的話，我們需要自己compile fortran的code，進入到./H3DD/src，在終端機打make去compile程式     
+```
+make
+```
 * .dout    
 重定位完的結果    
 * .hout    
