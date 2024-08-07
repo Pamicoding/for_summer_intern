@@ -2,7 +2,6 @@ import os
 import logging
 from pathlib import Path
 from datetime import datetime
-import csv
 import numpy as np
 import pandas as pd
 from concurrent.futures import ThreadPoolExecutor
@@ -15,17 +14,11 @@ def convert_utc_datetime(utc_datetime_str):
     return datetime.strptime(utc_datetime_str, '%Y-%m-%dT%H:%M:%S.%f')
 
 def gamma_reorder(ori_csv, reorder_csv):
-    
-    with open(ori_csv, 'r') as file:
-        reader = csv.reader(file)
-        header = next(reader)
-        data = list(reader)
-    data.sort(key=lambda row: convert_utc_datetime(row[0])) # second column is time
-    
-    with open(reorder_csv, 'w', newline='') as file:
-        writer = csv.writer(file)
-        writer.writerow(header) 
-        writer.writerows(data) 
+    df = pd.read_csv(ori_csv)
+    df['time'] = pd.to_datetime(df['time'])
+    df_sort = df.sort_values(by='time')
+    df_sort = df_sort.reset_index(drop=True)
+    df_sort.to_csv(reorder_csv)
 
 def gamma_chunk_split(split_dir, reorder_csv):
     split_dir.mkdir(parents=True, exist_ok=True)
